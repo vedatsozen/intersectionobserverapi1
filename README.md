@@ -1,0 +1,2 @@
+# intersectionobserverapi1
+INTERSECTION OBSERVER API - SCROLLING ANIMATION
