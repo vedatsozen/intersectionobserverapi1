@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTERSECTION OBSERVER API</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js"></script>
+</head>
+<body class="bg-black">
+
+    <header id="header" class="text-white h-screen max-w-screen flex justify-center items-center">
+
+        <div class="flex flex-col justify-center items-center w-9/12">
+            <h1 class="text-center text-5xl font-bold w-full">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</h1>
+            <div class="text-center mt-8 text-xl flex flex-col justify-center items-center gap-4 w-full">
+           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rem tenetur necessitatibus enim perferendis quasi ex eaque delectus reiciendis aspernatur, quaerat maiores saepe qui explicabo corrupti vel incidunt illo amet possimus.</p>
+           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi iusto ipsam nobis quam illo aliquam corrupti et sunt praesentium iure, nihil dolor. Hic ad harum nihil eligendi non porro quo.</p>
+            </div>
+        </div>
+
+    </header>
+
+   <section class="relative section h-screen max-w-screen flex justify-center items-center">
+
+    <h1 class="text text-4xl text-center text-white w-11/12">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, nisi dolorem minima neque sequi eligendi doloremque quos possimus itaque eveniet.</h1>
+    </section>
+
+    <section class="m-auto h-screen w-10/12 max-w-screen flex flex-row justify-center items-center gap-4">
+
+       <div class="box h-4/6 w-1/3 rounded rounded-2xl">
+        <h1 class="text-white text-4xl h-2/6 w-full flex justify-center items-center">
+            BOX 1
+        </h1>
+        <img src="imgs/resim1.jpg" class="h-4/6 w-full rounded rounded-2xl">
+       </div>
+       <div class="box h-4/6 w-1/3 rounded rounded-2xl">
+        <h1 class="text-white text-4xl h-2/6 w-full flex justify-center items-center">
+            BOX 2
+        </h1>
+        <img src="imgs/resim2.jpg" class="h-4/6 w-full rounded rounded-2xl">
+       </div>
+       <div class="box h-4/6 w-1/3 rounded rounded-2xl">
+        <h1 class="text-white text-4xl h-2/6 w-full flex justify-center items-center">
+            BOX 3
+        </h1>
+        <img src="imgs/resim3.jpg" class="h-4/6 w-full rounded rounded-2xl">
+       </div>
+
+        </section>
+
+        <section class="section h-screen max-w-screen flex justify-center items-center">
+
+    <h1 class="text text-4xl text-center text-white w-11/12">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, nisi dolorem minima neque sequi eligendi doloremque quos possimus itaque eveniet.</h1>
+            </section>
+</body>
+
+<script>
+    
+document.addEventListener("DOMContentLoaded", () => {
+    const images = document.querySelectorAll("img");
+    const texts = document.querySelectorAll("h1");
+    const boxes = document.querySelectorAll(".box");
+    const header = document.getElementById("header");
+
+    // Intersection Observer'ı oluştur
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Eğer eleman görünürse
+                    if (entry.target.classList.contains("anim")) {
+                        entry.target.classList.add("animasyon");
+                    } 
+                    
+                    else if (entry.target.id === "header") {
+                        entry.target.classList.add("headeranim");
+                    }
+                    
+                    else if (entry.target.classList.contains("text")) {
+                        entry.target.classList.add("textanim");
+                    } else if (entry.target.classList.contains("box")) {
+                        const photoIndex = Array.from(
+                            entry.target.parentElement.children
+                        ).indexOf(entry.target);
+                        setTimeout(() => {
+                            entry.target.classList.add("boxanim");
+                        }, photoIndex * 200); // 500ms'lik gecikme ile sırayla göster
+                    }
+                } else {
+                    // Eleman görünmezse sınıfları kaldır
+                    entry.target.classList.remove("animasyon");
+                    entry.target.classList.remove("textanim");
+                    entry.target.classList.remove("boxanim");
+                    entry.target.classList.remove("headeranim");
+                }
+            });
+        },
+        { threshold: 0.8 } // Threshold'u buraya ekleyin
+    );
+
+    // Tüm elemanları gözlemle
+    images.forEach((image) => observer.observe(image));
+    texts.forEach((text) => observer.observe(text));
+    boxes.forEach((box) => observer.observe(box));
+    observer.observe(header);
+});
+
+</script>
+
+</html>
